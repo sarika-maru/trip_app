@@ -12,6 +12,7 @@
     "react-native": "0.52.2",
     "react-native-image-slider": "^2.0.3",
     "react-native-material-dropdown": "^0.7.1",
+    "react-native-responsive-dimensions": "^1.0.2",
     "react-native-simple-radio-button": "^2.7.1",
     "react-navigation": "^1.0.3"
   },

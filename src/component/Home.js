@@ -70,9 +70,11 @@ class Home extends Component{
                                         }}>
                                         <ImageBackground source={{uri :data.image}} style={styles.imageBackStyle}>
                                             <View style={styles.dataViewStyle}>
+                                                <View style={{opacity:1.0, backgroundColor:'#64ce96'}}>
                                                 <Text style={styles.textStyle}>{"Trip    : "+data.trip_name}</Text>
                                                 <Text style={styles.textStyle}>{"Price   : "+data.per_person_price}</Text>
                                                 <Text style={styles.textStyle}>{"Days   : "+data.no_of_days}</Text>
+                                                </View>
                                             </View>
                                         </ImageBackground>
                                         </OnClick>
@@ -92,9 +94,9 @@ class Home extends Component{
 
 const styles= {
     scrollViewStyle:{
-    height:Dimensions.get('window').height,
-    width:Dimensions.get('window').width,
-    backgroundColor:'#1a9c99'
+        height:Dimensions.get('window').height,
+        width:Dimensions.get('window').width,
+        backgroundColor:'#1a9c99'
     },containerStyle:{
         height:Dimensions.get('window').height*0.7,
     },sliderStyle:{
@@ -110,10 +112,10 @@ const styles= {
     },dataViewStyle:{
         opacity:0.7,
         alignItems:'flex-start',
-        backgroundColor : '#1a9c99'
+        backgroundColor : '#64ce96'
     },textStyle:{
-        fontWeight:'bold',
-        color: '#fff'
+        fontWeight:'900',
+        color: '#000'
     }
 }
 

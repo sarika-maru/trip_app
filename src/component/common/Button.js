@@ -1,5 +1,6 @@
 import React from 'react';
 import {Text,TouchableOpacity} from  'react-native';
+import {responsiveFontSize,responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions';
 
 const Button = ({onPress,children,style})=>{
     const {buttonStyle,textStyle}= styles;
@@ -14,7 +15,7 @@ const Button = ({onPress,children,style})=>{
 
 const styles={
     textStyle:{
-      fontSize:18,
+      fontSize:responsiveFontSize(2),
       alignSelf:'center',
       fontWeight: '600',
       color: '#ffffff',
@@ -28,8 +29,8 @@ const styles={
         borderRadius:5,
         borderWidth:1,
         borderColor:'#007aff',
-        marginLeft:5,
-        marginRight:5
+        marginLeft:responsiveWidth(1),
+        marginRight:responsiveWidth(1)
     }
 }
 export  {Button};

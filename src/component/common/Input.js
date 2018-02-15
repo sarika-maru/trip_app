@@ -1,6 +1,6 @@
 import React from 'react';
 import {TextInput,View ,Text} from 'react-native';
-
+import {responsiveFontSize,responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions';
 const Input=({label,onChangeText,value,placeholder,secureTextEntry,style})=>{
     const {labelStyle,containerStyle} =styles;
     return(
@@ -20,12 +20,12 @@ const Input=({label,onChangeText,value,placeholder,secureTextEntry,style})=>{
 const styles={
     labelStyle :{
         flex:1,
-        fontSize:18,
-        paddingLeft:20,
-        paddingRight:5
+        fontSize:responsiveFontSize(2),
+        paddingLeft:responsiveWidth(1),
+        paddingRight:responsiveWidth(1)
     },
     containerStyle:{
-        height:40,
+        height: responsiveHeight(5),
         flex:1,
         width:50,
         flexDirection:'row',

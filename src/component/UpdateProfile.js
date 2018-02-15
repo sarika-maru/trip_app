@@ -1,39 +1,47 @@
-import React,{Component} from 'react';
-import {Text,View,ScrollView,Dimensions,Image,Alert} from 'react-native';
+import React ,{Component} from 'react';
+import {View,Text,ScrollView,Image,Dimensions} from 'react-native';
 import {CardSection,Card,Input,MyRadiobutton,Button,MyDropDown} from './common';
+import {responsiveHeight,responsiveWidth,responsiveFontSize} from 'react-native-responsive-dimensions';
+import AsyncFunction from './AsyncFunction';
 import axios from 'axios';
-import {responsiveFontSize,responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions';
 
-class UserRegForm extends Component{
+class UpdateProfile extends Component{
+    state={username:'',password:'',city:'', loading:false, user:''};
 
-    state={username:'',password:'',city:''};
-
-
-
-    onButtonPress(){
-        console.log("inside button press"+this.state.password);
-        console.log("inside button press"+this.state.username);
-        axios.post('http://localhost:8888/UserRegForm',{
-                username: this.state.username,
-                password: this.state.password,
-                city: this.state.city
-            },{headers:{
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            }}
-        ).then((response)=> {
-            console.log(response.data);
-            if(response.data == "Successfully Inserted"){
-                this.props.navigation.navigate("Main");
-            }else{
-                alert(response.data);
-            }
-
-        }).catch((err)=>{
-            console.log("error in catch"+ err);
-        });
+   async onButtonPress(){
 
     }
+
+    async getUserProfile(){
+        obj = new AsyncFunction();
+        token= await obj.getToken("Token");
+        var promise = await new Promise((resolve, reject)=>{
+            axios.get(`http://localhost:8888/GetUserByToken?token=${token}`).then((response)=>{
+                console.log("trips"+response.data);
+                resolve(response.data);
+            },(err)=>{
+                reject("Error"+err);
+            }).catch((ex)=>{
+                reject("Exception"+ex)
+            })
+        })
+        return promise
+
+    }
+
+    async componentDidMount(){
+        this.setState({loading:true});
+        await this.getUserProfile().then((data)=>{
+            console.log("data"+data);
+            this.setState({user :data, loading:false});
+            console.log(this.state.user);
+        },(err)=>{
+            alert("error"+ err);
+        }).catch((ex)=>{
+            alert("Exception"+ ex);
+        })
+    }
+
     render(){
         return(
             <ScrollView>
@@ -50,7 +58,7 @@ class UserRegForm extends Component{
                                 label={'Email'}
                                 placeholder={'user@gmail.com'}
                                 style={styles.inputStyle}
-                                value={this.state.username}
+                                value={this.state.user.username}
                                 onChangeText={username=>this.setState({username})}
                             />
                         </CardSection>
@@ -62,14 +70,14 @@ class UserRegForm extends Component{
                                 label={'Password'}
                                 placeholder={'password'}
                                 style={styles.inputStyle}
-                                value={this.state.password}
+                                value={this.state.user.password}
                                 onChangeText={password=>this.setState({password})}
                             />
                         </CardSection>
                     </Card>
                     <Card style={styles.cardStyle}>
                         <MyDropDown
-                            label={'city'}
+                            label={this.state.user.city}
                             data={[
                                 {value:"surat"},
                                 {value:"Baroda"}
@@ -78,7 +86,7 @@ class UserRegForm extends Component{
                         />
                     </Card>
                     <View>
-                        <Button onPress={this.onButtonPress.bind(this)} style={styles.buttonStyle}>Register</Button>
+                        <Button onPress={this.onButtonPress.bind(this)} style={styles.buttonStyle}>Update</Button>
                     </View>
 
 
@@ -88,6 +96,7 @@ class UserRegForm extends Component{
         )
     }
 }
+
 const styles={
     ViewStyle:{
         justifyContent: 'center',
@@ -162,4 +171,5 @@ const styles={
         marginRight:responsiveWidth(3.5)
     }
 }
-export default UserRegForm;
+
+export default UpdateProfile;

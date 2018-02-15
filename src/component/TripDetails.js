@@ -1,12 +1,32 @@
 import React,{Component} from 'react';
-import {View,Text,Alert,Image,ScrollView,Dimensions} from 'react-native';
+import {View,Text,Alert,Image,ScrollView,Dimensions,AsyncStorage,Modal} from 'react-native';
 import {Header,Button} from "./common";
+
 class TripDetails extends Component{
 
+    async getItem(item) {
+        try {
+            const value = await AsyncStorage.getItem(item);
+            console.log(value);
+            return value;
+        } catch (error) {
+            console.log("error"+ error);
+        }
+    }
+
     constructor(props){
-        super(props)
-        this.state={
-            trip : this.props.navigation.state.params.trip
+        super(props);
+    }
+    trip=this.props.navigation.state.params.trip;
+
+    async onBookPress(){
+        var token = await this.getItem("Token");
+        console.log(token);
+        if(token){
+            this.props.navigation.navigate('BookTrip');
+        }else
+        {
+            this.props.navigation.navigate('Main');
         }
     }
 
@@ -14,32 +34,34 @@ class TripDetails extends Component{
         var p="";
         var f="";
         return(
-            <ScrollView style={styles.scrollViewStyle}>
+
+
+        <ScrollView style={styles.scrollViewStyle}>
+
             <View>
-                <Image source={{uri:this.state.trip.image}} style={{height:200, width:'100%'}} />
-                <Header headerText={this.state.trip.trip_name} />
+                <Image source={{uri:this.trip.image}} style={{height:200, width:'100%'}} />
+                <Header headerText={this.trip.trip_name} />
                 <View style={styles.dataContainer}>
-                    <Text style={styles.priceText}>{"Price : " + this.state.trip.per_person_price }</Text>
-                    <Text style={styles.textStyle}>{"No Of Days : " + this.state.trip.no_of_days }</Text>
+                    <Text style={styles.priceText}>{"Price : " + this.trip.per_person_price }</Text>
+                    <Text style={styles.textStyle}>{"No Of Days : " + this.trip.no_of_days }</Text>
                     {
-                        this.state.trip.places.map((data,key)=>{
+                        this.trip.places.map((data,key)=>{
                                 p+=data+",";
                         })
 
                     }
-
                    <Text style={styles.textStyle}>{"Plcaes : "+p}</Text>
 
                     {
-                            this.state.trip.food.map((data,key)=>{
+                            this.trip.food.map((data,key)=>{
                                         f+=data+",";
 
                             })
                     }
                     <Text style={styles.textStyle}>{"Meal : "+ f}</Text>
 
-                    <Text style={styles.textStyle}>{"Description "+ this.state.trip.description}</Text>
-                    <Button style={styles.buttonStyle} >Interested</Button>
+                    <Text style={styles.textStyle}>{"Description "+ this.trip.description}</Text>
+                    <Button style={styles.buttonStyle} onPress={this.onBookPress.bind(this)}>Book Now</Button>
                 </View>
 
             </View>

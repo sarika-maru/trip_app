@@ -6,12 +6,20 @@ import LoginForm from './UserLoginForm';
 import TripDetails from './TripDetails';
 import Home from './Home';
 import Gallery from "./Gallery";
+import Logout from './Logout';
+import BookTrip from "./Booktrip";
+import SplashScreen from "./SplashScreen";
+import UpdateProfile from "./UpdateProfile";
+import {responsiveWidth,responsiveHeight,responsiveFontSize} from 'react-native-responsive-dimensions';
 
 
 
 const MenuDrawer = DrawerNavigator({
     Home : {screen : Home},
-    Gallery:{screen: Gallery}
+    Gallery:{screen: Gallery},
+    UpdateProfile:{screen: UpdateProfile},
+    Logout : {screen :Logout}
+
 },{
     navigationOptions:({navigation})=>({
         headerLeft : <View>
@@ -23,6 +31,11 @@ const MenuDrawer = DrawerNavigator({
 })
 
 const Router = StackNavigator({
+        splash:{ screen : SplashScreen,
+            navigationOptions:{
+                title: 'Trip Management'
+            }
+        },
         Main : { screen: LoginForm,
             navigationOptions:{
                 title: 'Trip Management'
@@ -40,14 +53,25 @@ const Router = StackNavigator({
             navigationOptions:{
             title: 'Trip Details'
             }
+        },BookTrip:{screen: BookTrip,
+            navigationOptions:{
+                title: 'Trip Details'
+            }
+        },UpdateProfile:{screen: UpdateProfile,
+            navigationOptions:{
+                title: 'Update Profile'
+            }
         }
     },{
     navigationOptions :{
-
+        initialPage:'splash',
         headerStyle:{
             backgroundColor:'#1a9c99',
+            height: responsiveHeight(6),
         },headerTitleStyle:{
-            color: '#fff'
+            color: '#fff',
+            fontSize: responsiveFontSize(2),
+            fontWeight:'700'
         },headerBackTitleStyle :{
             color: '#fff'
         },
