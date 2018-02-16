@@ -1,8 +1,21 @@
 import React,{Component} from 'react';
 import {View,Text,Alert,Image,ScrollView,Dimensions,AsyncStorage,Modal} from 'react-native';
+import {responsiveWidth,responsiveHeight,responsiveFontSize} from 'react-native-responsive-dimensions';
 import {Header,Button} from "./common";
 
 class TripDetails extends Component{
+
+    state = {
+        modalVisible: false
+    };
+
+    openModal() {
+        this.setState({modalVisible:true});
+    }
+
+    closeModal() {
+        this.setState({modalVisible:false});
+    }
 
     async getItem(item) {
         try {
@@ -22,6 +35,7 @@ class TripDetails extends Component{
     async onBookPress(){
         var token = await this.getItem("Token");
         console.log(token);
+        this.setState({modalVisible:false});
         if(token){
             this.props.navigation.navigate('BookTrip');
         }else
@@ -61,10 +75,27 @@ class TripDetails extends Component{
                     <Text style={styles.textStyle}>{"Meal : "+ f}</Text>
 
                     <Text style={styles.textStyle}>{"Description "+ this.trip.description}</Text>
-                    <Button style={styles.buttonStyle} onPress={this.onBookPress.bind(this)}>Book Now</Button>
+                    <Button style={styles.buttonStyle} onPress={this.openModal.bind(this)}>Book Now</Button>
+                    <View style={styles.modalViewStyle}>
+                        <Modal
+                            visible={this.state.modalVisible}
+                            animationType={'slide'}
+                            onRequestClose={() => this.closeModal()}
+                            Style={styles.modalStyle}
+                        >
+                            <View>
+                                <Text>There is full ticket for adult</Text>
+                                <Text>There half ticket for children who's age is between 8 to 15</Text>
+                                <Button style={styles.buttonStyle} onPress={this.onBookPress.bind(this)} >Ok</Button>
+                            </View>
+
+                        </Modal>
+
+                    </View>
                 </View>
 
             </View>
+
             </ScrollView>
         )
     }
@@ -105,6 +136,21 @@ const styles={
         backgroundColor:'#1a9c99',
         margin:12,
         width:'100%'
+    },modalStyle: {
+        position: 'absolute',
+        top: responsiveHeight(25),
+        left: responsiveWidth(0),
+        right: responsiveWidth(0),
+        bottom: responsiveHeight(0),
+        width: responsiveWidth(90),
+        height: responsiveHeight(50),
+        borderRadius: responsiveHeight(3),
+        flexDirection: 'column',
+        backgroundColor: '#fff',
+    },modalViewStyle:{
+        alignItems:'center',
+        justifyContent:'center',
+
     }
 }
 

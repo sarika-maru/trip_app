@@ -8,13 +8,34 @@ import axios from 'axios';
 class UpdateProfile extends Component{
     state={username:'',password:'',city:'', loading:false, user:''};
 
-   async onButtonPress(){
+    async onButtonPress(){
+        obj = new AsyncFunction();
+        token= await obj.getToken("Token");
 
-    }
+       axios.patch(`http://localhost:8888/UpdateProfile?token=${token}`,{
+               city: this.state.city
+           },{headers:{
+               'Accept': 'application/json',
+               'Content-Type': 'application/json',
+           }}
+       ).then((response)=> {
+           console.log(response.data);
+           if(response.data == "1"){
+               alert("Successfully Updated");
+           }else{
+               alert(response.data);
+           }
+
+       }).catch((err)=>{
+           console.log("error in catch"+ err);
+       });
+
+   }
 
     async getUserProfile(){
         obj = new AsyncFunction();
         token= await obj.getToken("Token");
+
         var promise = await new Promise((resolve, reject)=>{
             axios.get(`http://localhost:8888/GetUserByToken?token=${token}`).then((response)=>{
                 console.log("trips"+response.data);
@@ -46,11 +67,8 @@ class UpdateProfile extends Component{
         return(
             <ScrollView>
                 <View style={{backgroundColor : '#64ce96',height:Dimensions.get('window').height, width:Dimensions.get('window').width}}>
-                    <View style={styles.ViewStyle}>
-                        <Image source={require("../image/trip_logo.png")} style={{width:'100%',alignSelf: 'stretch'}} resizeMode={'contain'} />
-                    </View>
                     <View>
-                        <Text style={styles.headerStyle}>Trip Management</Text>
+                        <Text style={styles.headerStyle}>Update Profile</Text>
                     </View>
                     <Card style={styles.cardStyle}>
                         <CardSection style={styles.cardSectionStyle}>
@@ -60,18 +78,7 @@ class UpdateProfile extends Component{
                                 style={styles.inputStyle}
                                 value={this.state.user.username}
                                 onChangeText={username=>this.setState({username})}
-                            />
-                        </CardSection>
-                    </Card >
-                    <Card style={styles.cardStyle}>
-                        <CardSection style={styles.cardSectionStyle}>
-                            <Input
-                                secureTextEntry
-                                label={'Password'}
-                                placeholder={'password'}
-                                style={styles.inputStyle}
-                                value={this.state.user.password}
-                                onChangeText={password=>this.setState({password})}
+                                editable={false}
                             />
                         </CardSection>
                     </Card>

@@ -1,9 +1,15 @@
 import React,{Component} from 'react';
-import {View, Image, Text,Dimensions} from 'react-native';
+import {View, Image, Text,Dimensions,AsyncStorage} from 'react-native';
 import AsyncFunction  from'./AsyncFunction';
 import {NavigationActions} from 'react-navigation';
 
 class SplashScreen extends Component{
+
+    constructor(props){
+        super(props)
+        //AsyncStorage.clear((err)=>{console.log("error"+err)})
+    }
+
     timeout() {
           setTimeout(()=>{
             this.check();
@@ -11,7 +17,7 @@ class SplashScreen extends Component{
     }
     async check(){
         obj = new AsyncFunction();
-        token= await obj.getToken("Token");
+        token = await obj.getToken("Token");
         if(token === null){
             this.props.navigation.dispatch(NavigationActions.reset({
                 index:0,

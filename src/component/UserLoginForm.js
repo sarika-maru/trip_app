@@ -36,7 +36,16 @@ class LoginForm extends Component{
         ).then((response)=>{
             //alert(response.data);
             if(response.data !== ""){
+                //console.log("token in "+response.data);
                 AsyncStorage.setItem("Token",response.data);
+                /*AsyncStorage.getItem("Token").then((response)=>{
+                    value=response;
+                    console.log('In Login form: ' + value)
+                },(err)=>{
+                    console.log('Error: ' + err)
+                }).catch((err)=>{
+                    console.log('Catch Error: ' + err)
+                });*/
                 this.props.navigation.dispatch(NavigationActions.reset({
                     index:0,
                     actions:[

@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Text,View,TouchableOpacity,Image} from 'react-native';
 
-class Gallery extends Component{
+class Booktrip extends Component{
 
     render() {
         return(
@@ -12,4 +12,4 @@ class Gallery extends Component{
     }
 }
 
-export default Gallery;
+export default Booktrip;

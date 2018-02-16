@@ -11,8 +11,6 @@ class UserRegForm extends Component{
 
 
     onButtonPress(){
-        console.log("inside button press"+this.state.password);
-        console.log("inside button press"+this.state.username);
         axios.post('http://localhost:8888/UserRegForm',{
                 username: this.state.username,
                 password: this.state.password,

@@ -22,11 +22,12 @@ const MenuDrawer = DrawerNavigator({
 
 },{
     navigationOptions:({navigation})=>({
-        headerLeft : <View>
-            <TouchableOpacity onPress={()=> navigation.navigate("DrawerOpen")}>
-                <Image source={require('./../image/menu1.png')} style={{height:40, width:30}} />
-            </TouchableOpacity>
-        </View>
+        headerLeft :
+            <View style={{borderWidth:2, borderColor:'#fff',height:responsiveHeight(5), width:responsiveWidth(9.8),justifyContent:'center',paddingLeft:responsiveWidth(0.2),paddingRight:responsiveWidth(0.2)}}>
+                <TouchableOpacity onPress={()=> navigation.navigate("DrawerOpen")} >
+                    <Image source={require('./../image/menu1.png')} style={{height:40, width:30}} resizeMode={'contain'}/>
+                </TouchableOpacity>
+             </View>
     })
 })
 
