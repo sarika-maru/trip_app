@@ -1,35 +1,32 @@
 import React,{Component} from 'react';
 import {Text,View,ScrollView,Dimensions,Image,Alert} from 'react-native';
 import {CardSection,Card,Input,MyRadiobutton,Button,MyDropDown} from './common';
-import axios from 'axios';
 import {responsiveFontSize,responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions';
+import {connect,bindActionCreators} from 'react-redux';
+import {registration} from './../action/userAction';
 
 class UserRegForm extends Component{
 
-    state={username:'',password:'',city:''};
-
+    constructor(props){
+        super(props)
+        this.state={username:'',password:'',city:''};
+    }
 
 
     onButtonPress(){
-        axios.post('http://localhost:8888/UserRegForm',{
-                username: this.state.username,
-                password: this.state.password,
-                city: this.state.city
-            },{headers:{
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            }}
-        ).then((response)=> {
-            console.log(response.data);
-            if(response.data == "Successfully Inserted"){
-                this.props.navigation.navigate("Main");
-            }else{
-                alert(response.data);
-            }
+        if(this.state.username === '' && this.state.password==='' && this.state.city===''){
+            alert("Plz enter the all data");
+        }else{
+            this.props.registration(this.state.username,this.state.password,this.state.city).then((response)=>{
+                console.log(response);
 
-        }).catch((err)=>{
-            console.log("error in catch"+ err);
-        });
+                Alert.alert("User Successfully Inserted");
+            },(err)=>{
+                Alert.alert("Error"+ err);
+            }).catch((ex)=>{
+                Alert.alert("Exception :"+ ex);
+            });
+        }
 
     }
     render(){
@@ -85,7 +82,23 @@ class UserRegForm extends Component{
 
         )
     }
+
+
 }
+
+const mapStateToProps= state=>{
+    return{
+        addData:state.User.addData
+    }
+}
+
+/*function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(add_user, dispatch),
+    }
+}*/
+
+
 const styles={
     ViewStyle:{
         justifyContent: 'center',
@@ -160,4 +173,7 @@ const styles={
         marginRight:responsiveWidth(3.5)
     }
 }
-export default UserRegForm;
+
+export default connect(mapStateToProps,{
+    registration
+})(UserRegForm);

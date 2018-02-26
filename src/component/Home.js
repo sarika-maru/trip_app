@@ -1,46 +1,15 @@
 import React,{Component} from 'react';
 import {Text,View,TouchableOpacity,Image,Alert,ActivityIndicator,ImageBackground,ScrollView,Dimensions} from 'react-native';
 import {Slider,OnClick} from "./common";
-import slider from 'react-native-image-slider';
-import axios from 'axios';
+import {connect} from  'react-redux';
+import {TripAction} from '../action/tripAction';
 
 
 class Home extends Component{
 
     constructor(props){
         super(props)
-        this.state={
-            trips:[],
-            loading:false
-        }
-    }
 
-    async getAllTrip(){
-        var promise = await new Promise((resolve, reject)=>{
-            axios.get('http://localhost:8888/GetAllTrip').then((response)=>{
-                console.log("trips"+response.data);
-                resolve(response.data);
-            },(err)=>{
-                reject("Error"+err);
-            }).catch((ex)=>{
-                reject("Exception"+ex)
-            })
-        })
-        return promise
-
-    }
-
-    async componentDidMount(){
-        this.setState({loading:true});
-        await this.getAllTrip().then((data)=>{
-            console.log("data"+data);
-            this.setState({trips:data, loading:false});
-            console.log(this.state.trips);
-        },(err)=>{
-            alert("error"+ err);
-        }).catch((ex)=>{
-            alert("Exception"+ ex);
-        })
     }
 
     onDataPress(trip){
@@ -48,11 +17,6 @@ class Home extends Component{
     }
 
     render() {
-        if(this.state.loading)
-        {
-            return <ActivityIndicator size={'large'}/>
-        }
-
 
         return(
             <ScrollView style={styles.scrollViewStyle}>
@@ -61,7 +25,7 @@ class Home extends Component{
                     </View>
                     <View style={styles.containerStyle}>
                         {
-                            this.state.trips.map((data,key)=>{
+                            this.props.select.map((data,key)=>{
                                 return(
 
                                     <View style={styles.dataContainerStyle} key={key}>
@@ -88,6 +52,15 @@ class Home extends Component{
 
             </ScrollView>
         )
+    }
+
+    componentDidMount(){
+        this.props.onGetTrip();
+    }
+
+    shouldComponentUpdate(nextProps,nextstate){
+        //console.log(nextProps);
+        return true;
     }
 
 }
@@ -119,6 +92,20 @@ const styles= {
     }
 }
 
+const mapStateToProps=(state)=>{
+    return {
+        select: state.GetTrip.select
+    }
+}
 
-export default Home;
+function mapDispatchToProps(dispatch) {
+    return{
+        onGetTrip: ()=>{
+            dispatch(TripAction());
+        }
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
 

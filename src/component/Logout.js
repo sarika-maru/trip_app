@@ -1,9 +1,10 @@
 import React,{Component} from 'react'
-import {Text,View,AsyncStorage} from 'react-native';
+import {Text,View,AsyncStorage,Alert} from 'react-native';
 import axios from 'axios';
 import {NavigationActions} from 'react-navigation';
 import AsyncFunction from './AsyncFunction';
-var token="";
+import {connect} from 'react-redux';
+import {logout} from './../action/userAction';
 
 class Logout extends Component{
 
@@ -23,31 +24,27 @@ class Logout extends Component{
 
     onLogout()
     {
-        this.getToken().then((token)=>{
-            axios.delete(`http://localhost:8888/UserLogout?token=${token}`).then((response)=>{
-                console.log("response.data"+ response.data);
-                if(response.data == "success"){
-                    this.deleteItem("Token");
-                    temp= NavigationActions.reset({
-                        index: 0,
-                        actions: [
-                            NavigationActions.navigate({
-                                routeName: 'Main'
-                            })
-                        ]
-                    })
-
-                    this.props.navigation.dispatch(temp);
-
-
-                }else{
-                    alert("Logout Failed :"+response.data);
-                }
+        this.props.logout().then((response)=>{
+            AsyncStorage.removeItem("token").then((succes)=>{
+                this.props.navigation.dispatch(NavigationActions.reset({
+                    index:0,
+                    actions:[
+                        NavigationActions.navigate({
+                            routeName: 'Main'
+                        })
+                    ]
+                }));
+            },(err)=>{
+                console.log("Error in getting token"+ err);
+            }).catch((ex)=>{
+                console.log("Exception in getting token"+ ex);
             })
+
+        },(err)=>{
+            Alert.alert("Failed to logout"+ err);
+        }).catch((ex)=>{
+            Alert.alert("Exception :"+ ex);
         });
-
-
-
     }
     render(){
         return(
@@ -57,5 +54,12 @@ class Logout extends Component{
         )
     }
 }
+const mapStateToProps=(state)=>{
+    return{
+        logoutData : state.User.logoutData
+    }
+}
 
-export default Logout;
+export default connect(mapStateToProps,{
+    logout
+})(Logout);

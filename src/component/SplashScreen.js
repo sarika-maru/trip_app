@@ -15,29 +15,35 @@ class SplashScreen extends Component{
             this.check();
         }, 2000);
     }
-    async check(){
-        obj = new AsyncFunction();
-        token = await obj.getToken("Token");
-        if(token === null){
-            this.props.navigation.dispatch(NavigationActions.reset({
-                index:0,
-                actions:[
-                    NavigationActions.navigate({
-                        routeName : 'Main'
-                    })
-                ]
-            }));
+     check(){
+        AsyncStorage.getItem("token").then((token)=>{
+            if(token === null){
+                this.props.navigation.dispatch(NavigationActions.reset({
+                    index:0,
+                    actions:[
+                        NavigationActions.navigate({
+                            routeName : 'Main'
+                        })
+                    ]
+                }));
 
-        }else{
-            this.props.navigation.dispatch(NavigationActions.reset({
-                index:0,
-                actions:[
-                    NavigationActions.navigate({
-                        routeName:'home'
-                    })
-                ]
-            }));
-        }
+            }else{
+                this.props.navigation.dispatch(NavigationActions.reset({
+                    index:0,
+                    actions:[
+                        NavigationActions.navigate({
+                            routeName:'home'
+                        })
+                    ]
+                }));
+            }
+
+         },(err)=>{
+            console.log(err);
+        }).catch((ex)=>{
+            console.log(ex);
+        });
+
     }
     render(){
         return(

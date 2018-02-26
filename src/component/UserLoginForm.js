@@ -4,6 +4,8 @@ import {Card,CardSection,Input,Button,Link,OnClick} from "./common/index";
 import AsyncFunction  from'./AsyncFunction';
 import {responsiveFontSize,responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions';
 import {NavigationActions} from 'react-navigation';
+import {connect,bindActionCreators} from 'react-redux';
+import {login} from './../action/userAction';
 import axios from 'axios';
 var obj;
 class LoginForm extends Component{
@@ -12,40 +14,19 @@ class LoginForm extends Component{
     constructor(props)
     {
         super(props);
-
+        this.state={
+            username:"Sarika",
+            password:"1234567"
+        }
     }
 
-    state ={username:'Sarika', password:'1234567'};
-
-    static navigationOptions={
-        title:'Trip Management'
-    }
 
     onButtonPress()
     {
-        axios.post('http://localhost:8888/UserLoginForm',
-            {   username: this.state.username,
-                password:this.state.password
-            },
-            {
-                headers:{
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            }
-        ).then((response)=>{
-            //alert(response.data);
-            if(response.data !== ""){
-                //console.log("token in "+response.data);
-                AsyncStorage.setItem("Token",response.data);
-                /*AsyncStorage.getItem("Token").then((response)=>{
-                    value=response;
-                    console.log('In Login form: ' + value)
-                },(err)=>{
-                    console.log('Error: ' + err)
-                }).catch((err)=>{
-                    console.log('Catch Error: ' + err)
-                });*/
+        if(this.state.username === '' && this.state.password===''){
+            alert("Plz enter the all data");
+        }else{
+            this.props.login(this.state.username,this.state.password).then((response)=>{
                 this.props.navigation.dispatch(NavigationActions.reset({
                     index:0,
                     actions:[
@@ -54,11 +35,15 @@ class LoginForm extends Component{
                         })
                     ]
                 }));
-            }else{
-                alert("Respone : "+response.data);
-            }
-        })
-    }
+
+            },(err)=>{
+                Alert.alert("Failed to login"+ err);
+            }).catch((ex)=>{
+                Alert.alert("Exception :"+ ex);
+            });
+        }
+
+           }
 
     onGmailPress()
     {
@@ -137,6 +122,11 @@ class LoginForm extends Component{
     )
     }
 
+    componentWillReceiveProps(nextProps){
+        console.log("will recieve");
+        console.log(nextProps);
+        AsyncStorage.setItem("token",nextProps.loginData.headers['x-auth']);
+    }
 }
 
 const styles={
@@ -213,4 +203,14 @@ const styles={
     }
 }
 
-export default LoginForm;
+const mapStateToProps= state=>{
+    return{
+        loginData:state.User.loginData
+    }
+}
+
+export default connect(mapStateToProps,{
+    login
+})(LoginForm);
+
+

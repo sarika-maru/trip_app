@@ -4,6 +4,10 @@ import {responsiveWidth,responsiveHeight,responsiveFontSize} from 'react-native-
 import {Header,Button} from "./common";
 
 class TripDetails extends Component{
+    constructor(props){
+        super(props);
+    }
+    trip=this.props.navigation.state.params.trip;
 
     state = {
         modalVisible: false
@@ -27,10 +31,7 @@ class TripDetails extends Component{
         }
     }
 
-    constructor(props){
-        super(props);
-    }
-    trip=this.props.navigation.state.params.trip;
+
 
     async onBookPress(){
         var token = await this.getItem("Token");
@@ -76,12 +77,12 @@ class TripDetails extends Component{
 
                     <Text style={styles.textStyle}>{"Description "+ this.trip.description}</Text>
                     <Button style={styles.buttonStyle} onPress={this.openModal.bind(this)}>Book Now</Button>
-                    <View style={styles.modalViewStyle}>
+                    <View>
                         <Modal
                             visible={this.state.modalVisible}
                             animationType={'slide'}
                             onRequestClose={() => this.closeModal()}
-                            Style={styles.modalStyle}
+                            style={styles.modal}
                         >
                             <View>
                                 <Text>There is full ticket for adult</Text>
@@ -93,6 +94,7 @@ class TripDetails extends Component{
 
                     </View>
                 </View>
+
 
             </View>
 
@@ -136,17 +138,17 @@ const styles={
         backgroundColor:'#1a9c99',
         margin:12,
         width:'100%'
-    },modalStyle: {
+    },modal: {
         position: 'absolute',
-        top: responsiveHeight(25),
-        left: responsiveWidth(0),
-        right: responsiveWidth(0),
-        bottom: responsiveHeight(0),
-        width: responsiveWidth(90),
-        height: responsiveHeight(50),
-        borderRadius: responsiveHeight(3),
+        marginTop:10,
+        top: (50),
+        left: (0),
+        right:(0),
+        width: (100),
+        maxHeight: ('50%'),
+        borderRadius:(3),
         flexDirection: 'column',
-        backgroundColor: '#fff',
+        backgroundColor: '#fff'
     },modalViewStyle:{
         alignItems:'center',
         justifyContent:'center',

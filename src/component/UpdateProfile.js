@@ -12,7 +12,7 @@ class UpdateProfile extends Component{
         obj = new AsyncFunction();
         token= await obj.getToken("Token");
 
-       axios.patch(`http://localhost:8888/UpdateProfile?token=${token}`,{
+       axios.patch(`http://localhost:8888/UpdateProfile/${token}`,{
                city: this.state.city
            },{headers:{
                'Accept': 'application/json',
@@ -37,7 +37,7 @@ class UpdateProfile extends Component{
         token= await obj.getToken("Token");
 
         var promise = await new Promise((resolve, reject)=>{
-            axios.get(`http://localhost:8888/GetUserByToken?token=${token}`).then((response)=>{
+            axios.get(`http://localhost:8888/GetUserByToken/${token}`).then((response)=>{
                 console.log("trips"+response.data);
                 resolve(response.data);
             },(err)=>{
