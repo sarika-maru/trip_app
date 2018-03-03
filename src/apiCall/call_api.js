@@ -6,6 +6,7 @@ export var CALL_API=(url,type,header={},data={})=> {
 
     if(type == "get"){
         return axios.get(url,{headers : reqHeader}).then((response)=>{
+            console.log(response);
             return Promise.resolve(response);
         },(err)=>{
             return Promise.reject(err);
@@ -21,9 +22,17 @@ export var CALL_API=(url,type,header={},data={})=> {
             return Promise.reject(ex);
         })
     }else if(type == 'delete'){
-        console.log("inside call api");
-        console.log(reqHeader);
+        //console.log("inside delete call api");
+        //console.log(reqHeader);
         return axios.delete(url,{headers : reqHeader}).then((response)=>{
+            return Promise.resolve(response);
+        },(err)=>{
+            return Promise.reject(err);
+        }).catch((ex)=>{
+            return Promise.reject(ex);
+        });
+    }else if(type == 'put'){
+        return axios.put(url,data,{headers: reqHeader}).then((response)=>{
             return Promise.resolve(response);
         },(err)=>{
             return Promise.reject(err);

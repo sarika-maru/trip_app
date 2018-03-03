@@ -1,15 +1,23 @@
 import React ,{Component} from 'react';
-import {View,Text,ScrollView,Image,Dimensions} from 'react-native';
+import {View,Text,ScrollView,Image,Dimensions,Alert} from 'react-native';
 import {CardSection,Card,Input,MyRadiobutton,Button,MyDropDown} from './common';
 import {responsiveHeight,responsiveWidth,responsiveFontSize} from 'react-native-responsive-dimensions';
 import AsyncFunction from './AsyncFunction';
+import {connect} from 'react-redux';
+import {getUser,updateProfile} from './../action/userAction';
 import axios from 'axios';
 
 class UpdateProfile extends Component{
     state={username:'',password:'',city:'', loading:false, user:''};
 
-    async onButtonPress(){
-        obj = new AsyncFunction();
+   onButtonPress(){
+        this.props.updateProfile(this.state.city).then((response)=>{
+            Alert.alert("Succesfully Updated");
+        },(err)=>{
+            Alert.alert("Failed To update");
+        });
+
+        /*obj = new AsyncFunction();
         token= await obj.getToken("Token");
 
        axios.patch(`http://localhost:8888/UpdateProfile/${token}`,{
@@ -29,10 +37,10 @@ class UpdateProfile extends Component{
        }).catch((err)=>{
            console.log("error in catch"+ err);
        });
-
+*/
    }
 
-    async getUserProfile(){
+   /* async getUserProfile(){
         obj = new AsyncFunction();
         token= await obj.getToken("Token");
 
@@ -48,20 +56,8 @@ class UpdateProfile extends Component{
         })
         return promise
 
-    }
+    }*/
 
-    async componentDidMount(){
-        this.setState({loading:true});
-        await this.getUserProfile().then((data)=>{
-            console.log("data"+data);
-            this.setState({user :data, loading:false});
-            console.log(this.state.user);
-        },(err)=>{
-            alert("error"+ err);
-        }).catch((ex)=>{
-            alert("Exception"+ ex);
-        })
-    }
 
     render(){
         return(
@@ -76,7 +72,7 @@ class UpdateProfile extends Component{
                                 label={'Email'}
                                 placeholder={'user@gmail.com'}
                                 style={styles.inputStyle}
-                                value={this.state.user.username}
+                                value={this.props.userData.username}
                                 onChangeText={username=>this.setState({username})}
                                 editable={false}
                             />
@@ -84,7 +80,7 @@ class UpdateProfile extends Component{
                     </Card>
                     <Card style={styles.cardStyle}>
                         <MyDropDown
-                            label={this.state.user.city}
+                            label={this.props.userData.city}
                             data={[
                                 {value:"surat"},
                                 {value:"Baroda"}
@@ -101,6 +97,20 @@ class UpdateProfile extends Component{
             </ScrollView>
 
         )
+    }
+
+    componentDidMount(){
+        this.props.getUser();
+    }
+
+    shouldComponentUpdate(nextProps,nextState){
+        //console.log(nextProps);
+       /* if(this.props.updateStatus === 200){
+            Alert.alert("Succesfully Updated");
+        }else{
+            Alert.alert("Failed To update");
+        }*/
+        return true;
     }
 }
 
@@ -179,4 +189,13 @@ const styles={
     }
 }
 
-export default UpdateProfile;
+const mapStateToProps=(state)=>{
+    return{
+        userData: state.User.userData,
+        updateStatus : state.User.updateStatus
+    }
+}
+
+export default connect(mapStateToProps,{
+    getUser,updateProfile
+})(UpdateProfile);

@@ -8,43 +8,9 @@ import {logout} from './../action/userAction';
 
 class Logout extends Component{
 
-
-    async deleteItem(item) {
-        try {
-            const value = await AsyncStorage.removeItem(item);
-            return value;
-        } catch (error) {
-           console.log("Error"+ error);
-        }
-    }
-    async getToken(){
-        obj = new AsyncFunction();
-        return token= await obj.getToken("Token");
-    }
-
     onLogout()
     {
-        this.props.logout().then((response)=>{
-            AsyncStorage.removeItem("token").then((succes)=>{
-                this.props.navigation.dispatch(NavigationActions.reset({
-                    index:0,
-                    actions:[
-                        NavigationActions.navigate({
-                            routeName: 'Main'
-                        })
-                    ]
-                }));
-            },(err)=>{
-                console.log("Error in getting token"+ err);
-            }).catch((ex)=>{
-                console.log("Exception in getting token"+ ex);
-            })
-
-        },(err)=>{
-            Alert.alert("Failed to logout"+ err);
-        }).catch((ex)=>{
-            Alert.alert("Exception :"+ ex);
-        });
+        this.props.logout();
     }
     render(){
         return(
@@ -53,10 +19,32 @@ class Logout extends Component{
             </View>
         )
     }
+
+    componentWillReceiveProps(nextProps){
+        console.log(nextProps);
+        if(nextProps.logoutStatus == 200){
+            AsyncStorage.removeItem("token").then((succes)=>{
+                console.log("inside success");
+                this.props.navigation.dispatch(NavigationActions.reset({
+                    index:0,
+                    actions:[
+                        NavigationActions.navigate({
+                            routeName: 'Main'
+                        })
+                    ]
+                }));
+            }).catch((err)=>{
+                console.log("error inside remove token");
+            });
+        }else{
+            Alert.alert("Error in logout : " + nextProps.logoutStatus);
+        }
+
+    }
 }
 const mapStateToProps=(state)=>{
     return{
-        logoutData : state.User.logoutData
+        logoutStatus : state.User.logoutStatus
     }
 }
 

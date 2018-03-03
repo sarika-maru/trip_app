@@ -1,17 +1,16 @@
 import React,{Component} from 'react';
 import {View,Text,Alert,Image,ScrollView,Dimensions,AsyncStorage,Modal} from 'react-native';
 import {responsiveWidth,responsiveHeight,responsiveFontSize} from 'react-native-responsive-dimensions';
-import {Header,Button} from "./common";
+import {CardSection,Card,Input,Header,MyRadiobutton,Button,MyDropDown} from './common';
 
 class TripDetails extends Component{
     constructor(props){
         super(props);
+        this.state={
+            modalVisible: false
+        };
     }
     trip=this.props.navigation.state.params.trip;
-
-    state = {
-        modalVisible: false
-    };
 
     openModal() {
         this.setState({modalVisible:true});
@@ -21,28 +20,22 @@ class TripDetails extends Component{
         this.setState({modalVisible:false});
     }
 
-    async getItem(item) {
-        try {
-            const value = await AsyncStorage.getItem(item);
-            console.log(value);
-            return value;
-        } catch (error) {
-            console.log("error"+ error);
-        }
-    }
+     onBookPress(){
+        AsyncStorage.getItem('token').then((token)=>{
+            console.log(token);
+            this.setState({modalVisible:false});
+            if(token){
+                this.props.navigation.navigate('BookTrip');
+            }else
+            {
+                this.props.navigation.navigate('Main');
+            }
+        },(err)=>{
+            Alert.alert("Error : "+ err);
+        }).catch((ex)=>{
+            Alert.alert("Exception : "+ ex);
+        })
 
-
-
-    async onBookPress(){
-        var token = await this.getItem("Token");
-        console.log(token);
-        this.setState({modalVisible:false});
-        if(token){
-            this.props.navigation.navigate('BookTrip');
-        }else
-        {
-            this.props.navigation.navigate('Main');
-        }
     }
 
     render(){
@@ -79,15 +72,31 @@ class TripDetails extends Component{
                     <Button style={styles.buttonStyle} onPress={this.openModal.bind(this)}>Book Now</Button>
                     <View>
                         <Modal
+                            animationType="slide"
+                            transparent={true}
+                            supportedOrientations={['portrait', 'landscape']}
+
                             visible={this.state.modalVisible}
-                            animationType={'slide'}
                             onRequestClose={() => this.closeModal()}
-                            style={styles.modal}
                         >
-                            <View>
-                                <Text>There is full ticket for adult</Text>
-                                <Text>There half ticket for children who's age is between 8 to 15</Text>
-                                <Button style={styles.buttonStyle} onPress={this.onBookPress.bind(this)} >Ok</Button>
+                            <View style={styles.container}>
+                                <View style={styles.contentContainer}>
+                                    <Text style={styles.textStyle}>There is full ticket for adult</Text>
+                                    <Text style={styles.textStyle}>There half ticket for children who's age is between 8 to 15</Text>
+                                    <View style={{width:300,height:150,alignSelf:'center',padding:10,alignItems:'center',justifyContent:'space-between'}}>
+                                            <Input
+                                                placeholder={'Pooja'}
+                                                style={{height:50,width:300,borderWidth:1}}
+                                                value={this.state.username}
+                                            />
+                                            <Input
+                                                placeholder={'Sarika'}
+                                                style={{height:50,width:300,borderWidth:1}}
+                                                value={this.state.username}
+                                            />
+                                    </View>
+                                    <Button style={styles.buttonStyle} onPress={this.onBookPress.bind(this)} >Ok</Button>
+                                </View>
                             </View>
 
                         </Modal>
@@ -153,6 +162,50 @@ const styles={
         alignItems:'center',
         justifyContent:'center',
 
+    },container: {
+        backgroundColor: 'rgba(0,0,0,0.4)',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+
+    },
+    contentContainer: {
+        flexWrap: 'wrap',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        paddingHorizontal: 20,
+        marginHorizontal: 10,
+        marginVertical: 40,
+        paddingTop: 20,
+        backgroundColor: '#fff',
+        borderRadius: 20,
+        paddingBottom: 40
+    },cardStyle:{
+        borderWidth:1,
+        borderRadius:2,
+        borderColor : '#ddd',
+        borderBottomWidth:0,
+        shadowColor: '#000',
+        shadowOffset:{width:0, height:2},
+        shadowOpacity:0.1,
+        shadowRadius:2,
+        elevation:1,
+        marginTop:responsiveHeight(2),
+        width:responsiveWidth(75),
+        alignSelf: 'center',
+        backgroundColor:'#fff'
+    },
+    cardSectionStyle:{
+        borderBottomWidth:1,
+        padding : 5,
+        height: responsiveHeight(6.5),
+        backgroundColor:'#fff',
+        justifyContent: 'center',
+        alignSelf:'center',
+        flexDirection: 'row',
+        borderColor: '#ddd',
+        position: 'relative'
     }
 }
 

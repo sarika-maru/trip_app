@@ -20,7 +20,7 @@ const Input=({label,onChangeText,value,placeholder,secureTextEntry,style,editabl
 }
 const styles={
     labelStyle :{
-        flex:1,
+        //flex:1,
         fontSize:responsiveFontSize(2),
         paddingLeft:responsiveWidth(1),
         paddingRight:responsiveWidth(1)

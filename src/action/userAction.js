@@ -1,8 +1,8 @@
 import {CALL_API} from "../apiCall/call_api";
 import config from './../apiCall/config';
-import {SIGN_IN,SIGN_UP,SIGN_OUT} from './../action/actionType';
+import {SIGN_IN,SIGN_UP,SIGN_OUT,GET_DATA,UPDATE_DATA} from './../action/actionType';
 import {AsyncStorage} from 'react-native';
-import {GET_DATA} from "./actionType";
+
 
 export const login=(username,password)=>{
     return(dispatch,getState)=>{
@@ -52,7 +52,7 @@ export const logout=()=>{
 
                 dispatch({
                     type:SIGN_OUT,
-                    data:response.data
+                    data:response.status
                 })
             },(err)=>{
                 return Promise.reject(err);
@@ -70,7 +70,8 @@ export const getUser=()=>{
             if(!token){
                 token="";
             }
-            return CALL_API(config.base_url+config.singOut,'get',{'x-auth':token},{}).then((response)=>{
+            console.log(token);
+            return CALL_API(config.base_url+config.User,'get',{'x-auth':token},{}).then((response)=>{
                 console.log("API : "+ config.base_url+config.User);
 
                 dispatch({
@@ -84,6 +85,24 @@ export const getUser=()=>{
             });
         })
 
+    }
+}
+
+export const updateProfile =(city)=>{
+    return(dispatch,getState)=>{
+        return AsyncStorage.getItem('token').then((token)=>{
+            if(!token){
+                token="";
+            }
+            return CALL_API(config.base_url+config.User,'put',{'x-auth':token},{city: city}).then((response)=>{
+                console.log("API : "+ config.base_url+config.User);
+
+                dispatch({
+                    type:UPDATE_DATA,
+                    statusCode:response.status
+                })
+            })
+        })
     }
 }
 

@@ -1,11 +1,11 @@
-import {SIGN_UP,SIGN_IN,SIGN_OUT} from './../action/actionType';
-import {GET_DATA} from "../action/actionType";
+import {SIGN_UP,SIGN_IN,SIGN_OUT,GET_DATA,UPDATE_DATA} from './../action/actionType';
 
 const INTIAL_STATE={
     regData:{},
     loginData:{},
-    logoutData:{},
-    userData:{}
+    logoutStatus:0,
+    userData:{},
+    updateStatus:0
 }
 
 export const UserReducer=(state=INTIAL_STATE,action)=>{
@@ -32,6 +32,12 @@ export const UserReducer=(state=INTIAL_STATE,action)=>{
             return{
                 ...state,
                 userData:action.data
+            }
+        }
+        case UPDATE_DATA :{
+            return{
+                ...state,
+                updateStatus:action.statusCode
             }
         }
         default:{
