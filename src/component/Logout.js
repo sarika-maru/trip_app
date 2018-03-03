@@ -22,9 +22,8 @@ class Logout extends Component{
 
     componentWillReceiveProps(nextProps){
         console.log(nextProps);
-        if(nextProps.logoutStatus == 200){
+        if(nextProps.logoutStatus === 200){
             AsyncStorage.removeItem("token").then((succes)=>{
-                console.log("inside success");
                 this.props.navigation.dispatch(NavigationActions.reset({
                     index:0,
                     actions:[

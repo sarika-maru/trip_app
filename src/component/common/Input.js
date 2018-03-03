@@ -1,7 +1,7 @@
 import React from 'react';
 import {TextInput,View ,Text} from 'react-native';
 import {responsiveFontSize,responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions';
-const Input=({label,onChangeText,value,placeholder,secureTextEntry,style,editable})=>{
+const Input=({label,onChangeText,value,placeholder,secureTextEntry,style,editable,onBlur})=>{
     const {labelStyle,containerStyle} =styles;
     return(
         <View style={containerStyle}>
@@ -14,6 +14,7 @@ const Input=({label,onChangeText,value,placeholder,secureTextEntry,style,editabl
                 onChangeText ={onChangeText}
                 style ={style}
                 editable={editable}
+                onBlur={onBlur}
             />
         </View>
     );

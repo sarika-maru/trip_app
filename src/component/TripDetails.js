@@ -7,7 +7,9 @@ class TripDetails extends Component{
     constructor(props){
         super(props);
         this.state={
-            modalVisible: false
+            modalVisible: false,
+            persons:'',
+            childrens:''
         };
     }
     trip=this.props.navigation.state.params.trip;
@@ -22,10 +24,13 @@ class TripDetails extends Component{
 
      onBookPress(){
         AsyncStorage.getItem('token').then((token)=>{
-            console.log(token);
             this.setState({modalVisible:false});
             if(token){
-                this.props.navigation.navigate('BookTrip');
+                data={
+                    persons: this.state.persons,
+                    childrens: this.state.childrens
+                };
+                this.props.navigation.navigate('BookTrip',{data});
             }else
             {
                 this.props.navigation.navigate('Main');
@@ -82,17 +87,19 @@ class TripDetails extends Component{
                             <View style={styles.container}>
                                 <View style={styles.contentContainer}>
                                     <Text style={styles.textStyle}>There is full ticket for adult</Text>
-                                    <Text style={styles.textStyle}>There half ticket for children who's age is between 8 to 15</Text>
+                                    <Text style={styles.textStyle}>There is half ticket for children who's age is between 8 to 15</Text>
                                     <View style={{width:300,height:150,alignSelf:'center',padding:10,alignItems:'center',justifyContent:'space-between'}}>
                                             <Input
-                                                placeholder={'Pooja'}
+                                                placeholder={'Number of persons'}
                                                 style={{height:50,width:300,borderWidth:1}}
-                                                value={this.state.username}
+                                                value={this.state.persons}
+                                                onChangeText={persons=>this.setState({persons})}
                                             />
                                             <Input
-                                                placeholder={'Sarika'}
+                                                placeholder={'Number of children'}
                                                 style={{height:50,width:300,borderWidth:1}}
-                                                value={this.state.username}
+                                                value={this.state.childrens}
+                                                onChangeText={childrens=>this.setState({childrens})}
                                             />
                                     </View>
                                     <Button style={styles.buttonStyle} onPress={this.onBookPress.bind(this)} >Ok</Button>

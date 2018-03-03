@@ -25,7 +25,7 @@ export const UserReducer=(state=INTIAL_STATE,action)=>{
         case SIGN_OUT : {
             return{
                 ...state,
-                logoutData:action.data
+                logoutStatus:action.statusCode
             }
         }
         case GET_DATA :{

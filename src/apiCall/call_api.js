@@ -22,8 +22,7 @@ export var CALL_API=(url,type,header={},data={})=> {
             return Promise.reject(ex);
         })
     }else if(type == 'delete'){
-        //console.log("inside delete call api");
-        //console.log(reqHeader);
+
         return axios.delete(url,{headers : reqHeader}).then((response)=>{
             return Promise.resolve(response);
         },(err)=>{

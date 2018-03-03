@@ -52,7 +52,7 @@ export const logout=()=>{
 
                 dispatch({
                     type:SIGN_OUT,
-                    data:response.status
+                    statusCode:response.status
                 })
             },(err)=>{
                 return Promise.reject(err);
