@@ -17,46 +17,7 @@ class UpdateProfile extends Component{
             Alert.alert("Failed To update");
         });
 
-        /*obj = new AsyncFunction();
-        token= await obj.getToken("Token");
-
-       axios.patch(`http://localhost:8888/UpdateProfile/${token}`,{
-               city: this.state.city
-           },{headers:{
-               'Accept': 'application/json',
-               'Content-Type': 'application/json',
-           }}
-       ).then((response)=> {
-           console.log(response.data);
-           if(response.data == "1"){
-               alert("Successfully Updated");
-           }else{
-               alert(response.data);
-           }
-
-       }).catch((err)=>{
-           console.log("error in catch"+ err);
-       });
-*/
    }
-
-   /* async getUserProfile(){
-        obj = new AsyncFunction();
-        token= await obj.getToken("Token");
-
-        var promise = await new Promise((resolve, reject)=>{
-            axios.get(`http://localhost:8888/GetUserByToken/${token}`).then((response)=>{
-                console.log("trips"+response.data);
-                resolve(response.data);
-            },(err)=>{
-                reject("Error"+err);
-            }).catch((ex)=>{
-                reject("Exception"+ex)
-            })
-        })
-        return promise
-
-    }*/
 
 
     render(){
@@ -104,12 +65,7 @@ class UpdateProfile extends Component{
     }
 
     shouldComponentUpdate(nextProps,nextState){
-        //console.log(nextProps);
-       /* if(this.props.updateStatus === 200){
-            Alert.alert("Succesfully Updated");
-        }else{
-            Alert.alert("Failed To update");
-        }*/
+
         return true;
     }
 }

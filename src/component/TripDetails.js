@@ -86,6 +86,7 @@ class TripDetails extends Component{
                         >
                             <View style={styles.container}>
                                 <View style={styles.contentContainer}>
+                                    <Button style={styles.closeButtonStyle} onPress={()=>{this.closeModal()}}>x</Button>
                                     <Text style={styles.textStyle}>There is full ticket for adult</Text>
                                     <Text style={styles.textStyle}>There is half ticket for children who's age is between 8 to 15</Text>
                                     <View style={{width:300,height:150,alignSelf:'center',padding:10,alignItems:'center',justifyContent:'space-between'}}>
@@ -213,6 +214,14 @@ const styles={
         flexDirection: 'row',
         borderColor: '#ddd',
         position: 'relative'
+    },closeButtonStyle:{
+        alignSelf:'center',
+        backgroundColor:'#fff',
+        borderRadius:5,
+        borderWidth:1,
+        backgroundColor:'#1a9c99',
+        margin:12,
+        width:'50%'
     }
 }
 

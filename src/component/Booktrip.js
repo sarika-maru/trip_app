@@ -1,22 +1,26 @@
 import React,{Component} from 'react';
-import {Text,View,TouchableOpacity,Image,Alert} from 'react-native';
+import {Text,View,TouchableOpacity,Image,Alert,TochableOpacity} from 'react-native';
 import {responsiveFontSize,responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions';
-import {CardSection,Card,Input,Header,MyRadiobutton,Button,MyDropDown} from './common';
-
+import {CardSection,Card,Input,Header,MyRadiobutton,Button,MyDropDown,NumericUpDown} from './common';
 var per=[];
 var child=[];
 class Booktrip extends Component{
 
     constructor(props){
         super(props);
+
         this.state={
             perName:[],
             childName:[],
-            name:''
+            cname:'',
+            pname:''
         }
+
 
     }
     data=this.props.navigation.state.params.data;
+
+
 
     onBlurText(i){
 
@@ -27,48 +31,48 @@ class Booktrip extends Component{
                 console.log('In Inner else');
                 this.state.perName[i]=this.state.name;
             }
-        //}
+
     }
 
     generatePersonBox(){
             for(var i = 0 ; i < this.data.persons ; i++) {
                   per.push(
-                      <Card style={styles.cardStyle}>
+                      <Card style={styles.cardStyle} key={i}>
                           <CardSection style={styles.cardSectionStyle}>
                               <Input
-                                  label={i}
+                                  label={i+1 + "."}
                                   placeholder={'Your Name'}
                                   style={styles.inputStyle}
                                   value={this.state.perName[i]}
-                                  onChangeText={(perName)=>this.setState({name:perName})}
+                                  onChangeText={(perName)=>this.setState({pname:perName})}
                                   onBlur={this.onBlurText.bind(this,i)}
                               />
+                              <NumericUpDown />
                           </CardSection>
-                      </Card >
+                      </Card>
                     )
-                console.log("in loop")
-                console.log(this.state.name);
-                console.log(this.state.perName[i]);
             }
             return per;
     }
     generateChildBox(){
-        for(var i = 1 ; i <= this.data.childrens ; i++) {
+        for(var i = 0 ; i < this.data.childrens ; i++) {
             child.push(
-                <Card style={styles.cardStyle}>
+                <Card style={styles.cardStyle} key={i}>
                     <CardSection style={styles.cardSectionStyle}>
                         <Input
-                            label={i}
-                            placeholder={'Your Children Name'}
+                            label={i+1 + "."}
+                            placeholder={'Your Children  Name'}
                             style={styles.inputStyle}
                             value={this.state.childName[i]}
-                            onChangeText={(childName)=>{this.state.childName.push(childName);this.setState({childName :this.state.childName})}}
+                            onChangeText={(childName)=>this.setState({cname:childName})}
+                            onBlur={this.onBlurText.bind(this,i)}
                         />
+                        <NumericUpDown />
                     </CardSection>
-                </Card >
+                </Card>
             )
         }
-        return child
+        return per;
     }
 
     onButtonPress(){
@@ -77,22 +81,31 @@ class Booktrip extends Component{
     }
 
     render(){
-        this.generateChildBox();
-        this.generatePersonBox();
-        return(
-            <View>
-                <Text style={styles.textStyle}>Enter the persons details: </Text>
-                {
-                   per
-                }
-                <Text style={styles.textStyle}>Enter the childrens details: </Text>
-                {
-                    child
-                }
-                <Button onPress={this.onButtonPress.bind(this)} style={styles.buttonStyle}>Book</Button>
-            </View>
-        )
+
+            this.generatePersonBox();
+            this.generateChildBox();
+            return (
+                <View>
+                    <Text style={styles.textStyle}>Enter the persons details: </Text>
+                    {
+                        per
+                    }
+                    <Text style={styles.textStyle}>Enter the childrens details: </Text>
+                    {
+                        child
+                    }
+                    <Button onPress={this.onButtonPress.bind(this)} style={styles.buttonStyle}>Book</Button>
+                </View>
+            )
     }
+
+
+
+    componentWillUnmount(){
+        per=[];
+        child=[];
+    }
+
 }
 
 const styles={

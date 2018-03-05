@@ -9,3 +9,4 @@ export * from './RadioButton';
 export * from './MyDropDown';
 export * from './OnClick';
 export * from './Slider';
+export * from './NumericUpDown';

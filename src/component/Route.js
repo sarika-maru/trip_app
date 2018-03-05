@@ -56,7 +56,7 @@ const Router = StackNavigator({
             }
         },BookTrip:{screen: BookTrip,
             navigationOptions:{
-                title: 'Trip Details'
+                title: 'BOOKING TRIP'
             }
         },UpdateProfile:{screen: UpdateProfile,
             navigationOptions:{
