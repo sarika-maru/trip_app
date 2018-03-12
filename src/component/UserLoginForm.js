@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {View,Text,Image,Dimensions,ScrollView,ImageBackground,Alert,Linking,AsyncStorage} from 'react-native';
+import {View,Text,Image,Dimensions,ScrollView,ImageBackground,Alert,Linking,AsyncStorage,Animated,Easing} from 'react-native';
 import {Card,CardSection,Input,Button,Link,OnClick} from "./common/index";
 import AsyncFunction  from'./AsyncFunction';
 import {responsiveFontSize,responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions';
@@ -16,11 +16,10 @@ class LoginForm extends Component{
         super(props);
         this.state={
             username:"Sarika",
-            password:"1234567"
+            password:"1234567",
+            fadeAnim : new Animated.Value(0)
         }
     }
-
-
     onButtonPress()
     {
         if(this.state.username === '' && this.state.password===''){
@@ -58,10 +57,11 @@ class LoginForm extends Component{
 
 
     render(){
-
+      let  {fadeAnim} = this.state
     return(
+
         <ScrollView>
-        <View style={{backgroundColor : '#64ce96',height:responsiveHeight(100), width:responsiveWidth(100)}}>
+        <Animated.View style={{backgroundColor : '#64ce96',height:responsiveHeight(100), width:responsiveWidth(100), opacity:fadeAnim}}>
             <View style={styles.ViewStyle}>
                 <Image source={require("../image/trip_logo.png")} style={{width:'100%'}} resizeMode={'contain'} />
             </View>
@@ -117,10 +117,19 @@ class LoginForm extends Component{
                 </OnClick>
             </View>
 
-        </View>
+        </Animated.View>
         </ScrollView>
     )
     }
+    componentDidMount(){
+        Animated.spring(this.state.fadeAnim,{
+           /* toValue:1,duration:2000*/
+            toValue: 1,
+            easing: Easing.out(Easing.quad),
+            duration: 3000,
+        }).start();
+    }
+
 
     componentWillReceiveProps(nextProps){
         console.log("will recieve");
@@ -199,7 +208,7 @@ const styles={
     }, imageStyle:{
         height:responsiveHeight(8),
         width:responsiveWidth(8),
-        marginRight:responsiveWidth()
+        marginRight:responsiveWidth(5)
     }
 }
 

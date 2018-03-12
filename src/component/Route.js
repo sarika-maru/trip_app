@@ -12,8 +12,6 @@ import SplashScreen from "./SplashScreen";
 import UpdateProfile from "./UpdateProfile";
 import {responsiveWidth,responsiveHeight,responsiveFontSize} from 'react-native-responsive-dimensions';
 
-
-
 const MenuDrawer = DrawerNavigator({
     Home : {screen : Home},
     Gallery:{screen: Gallery},

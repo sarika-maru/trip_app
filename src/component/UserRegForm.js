@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Text,View,ScrollView,Dimensions,Image,Alert} from 'react-native';
+import {Text,View,ScrollView,Dimensions,Image,Alert,Animated} from 'react-native';
 import {CardSection,Card,Input,MyRadiobutton,Button,MyDropDown} from './common';
 import {responsiveFontSize,responsiveHeight,responsiveWidth} from 'react-native-responsive-dimensions';
 import {connect,bindActionCreators} from 'react-redux';
@@ -9,7 +9,12 @@ class UserRegForm extends Component{
 
     constructor(props){
         super(props)
-        this.state={username:'',password:'',city:''};
+        this.state={
+            username:'',
+            password:'',
+            city:''
+        };
+
     }
 
 
@@ -82,8 +87,6 @@ class UserRegForm extends Component{
 
         )
     }
-
-
 }
 
 const mapStateToProps= state=>{
